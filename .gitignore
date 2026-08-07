@@ -1,0 +1,4 @@
+server/.env
+.DS_Store
+client/ayurveda-site.zip
+server/node_modules/
