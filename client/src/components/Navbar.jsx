@@ -1,81 +1,142 @@
 import { FaLeaf } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function Navbar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isHome = location.pathname === '/';
+
+  const navItems = [
+    { name: 'Home', path: '/' },
+    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'AI Chat', path: '/aichat' },
+    { name: 'Voice AI', path: '/voice-ai' },
+    { name: 'Food Scanner', path: '/food-scanner' },
+    { name: 'BMI', path: '/bmi' },
+    { name: 'Dosha', path: '/dosha' },
+  ];
+
+  const isActive = (path) => location.pathname === path;
+
+  const goBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
+    <nav className="fixed left-1/2 top-4 z-50 w-[95%] max-w-7xl -translate-x-1/2 rounded-2xl border border-white/10 bg-[#101512]/95 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl">
 
-      <div className="flex items-center justify-between px-6 md:px-8 py-4">
+      <div className="flex items-center justify-between px-3 py-3 md:px-5 md:py-4">
 
-        <Link to="/" className="flex items-center gap-3">
+        {/* LEFT SIDE */}
 
-          <div className="w-11 h-11 rounded-2xl bg-green-500/15 border border-green-400/20 flex items-center justify-center shadow-[0_0_20px_rgba(74,222,128,0.25)]">
-            <FaLeaf className="text-green-400 text-2xl" />
-          </div>
+        <div className="flex min-w-0 items-center gap-3">
 
-          <div>
+          {/* BACK */}
 
-            <h1 className="text-2xl font-bold text-green-400 drop-shadow-[0_0_12px_rgba(74,222,128,0.8)]">
-              AyurVeda AI
-            </h1>
+          {!isHome && (
+            <button
+              onClick={goBack}
+              title="Go back"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-700 bg-gray-900 text-lg text-gray-300 transition hover:border-green-500/40 hover:bg-green-500/10 hover:text-green-400"
+            >
+              ←
+            </button>
+          )}
 
-            <p className="text-xs text-gray-300 -mt-1">
-              Smart Ayurvedic Wellness
-            </p>
+          {/* LOGO */}
 
-          </div>
+          <Link
+            to="/"
+            className="flex shrink-0 items-center gap-3"
+          >
 
-        </Link>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-green-500/20 bg-green-500/10">
+              <FaLeaf className="text-xl text-green-400" />
+            </div>
 
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-200">
+            <div className="hidden sm:block">
 
-          <Link to="/" className="hover:text-green-400 transition-colors duration-200">
-            Home
+              <h1 className="text-xl font-bold text-green-400">
+                AyurVeda AI
+              </h1>
+
+              <p className="text-[10px] text-gray-500">
+                Smart Ayurvedic Wellness
+              </p>
+
+            </div>
+
           </Link>
 
-          <a href="#features" className="hover:text-green-400 transition-colors duration-200">
-            Features
-          </a>
+        </div>
 
-          <a href="#about" className="hover:text-green-400 transition-colors duration-200">
-            About
-          </a>
 
-          <Link to="/bmi" className="hover:text-green-400 transition-colors duration-200">
-            BMI
-          </Link>
+        {/* DESKTOP NAVIGATION */}
 
-          <Link to="/dosha" className="hover:text-green-400 transition-colors duration-200">
-            Dosha
-          </Link>
+        <div className="hidden items-center gap-1 lg:flex">
 
-          <Link to="/dashboard" className="hover:text-green-400 transition-colors duration-200">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                isActive(item.path)
+                  ? 'bg-green-500/10 text-green-400'
+                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
+              }`}
+            >
+              {item.name}
+            </Link>
+          ))}
+
+        </div>
+
+
+        {/* RIGHT SIDE */}
+
+        <div className="flex items-center gap-2">
+
+          <Link
+            to="/dashboard"
+            className="hidden rounded-full border border-green-500/20 px-4 py-2 text-sm font-medium text-green-400 transition hover:bg-green-500/10 sm:inline-flex"
+          >
             Dashboard
           </Link>
 
-          <Link to="/aichat" className="hover:text-green-400 transition-colors duration-200">
+          <Link
+            to="/aichat"
+            className="rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:bg-green-500 hover:scale-105"
+          >
             AI Chat
           </Link>
 
         </div>
 
-        <div className="flex items-center gap-3">
+      </div>
 
+
+      {/* MOBILE NAVIGATION */}
+
+      <div className="flex gap-1 overflow-x-auto border-t border-white/5 px-3 py-2 lg:hidden">
+
+        {navItems.map((item) => (
           <Link
-            to="/dashboard"
-            className="hidden md:inline-flex px-4 py-2 rounded-full border border-green-500/30 text-green-300 hover:bg-green-500/10 transition-all duration-200 text-sm font-medium"
+            key={item.path}
+            to={item.path}
+            className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+              isActive(item.path)
+                ? 'bg-green-500/10 text-green-400'
+                : 'text-gray-500 hover:bg-white/5 hover:text-gray-200'
+            }`}
           >
-            Live Demo
+            {item.name}
           </Link>
-
-          <Link
-            to="/bmi"
-            className="px-5 py-2 rounded-full bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-lg hover:from-green-400 hover:to-green-600 transition-all duration-200 hover:scale-105"
-          >
-            Get Started
-          </Link>
-
-        </div>
+        ))}
 
       </div>
 
