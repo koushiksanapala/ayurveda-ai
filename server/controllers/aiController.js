@@ -29,7 +29,7 @@ const chatWithAI = async (req, res) => {
       ],
       model: "openai/gpt-oss-20b",
       temperature: 0.5,
-      max_tokens: 200,
+      max_tokens: 600,
     });
 
     const reply =
