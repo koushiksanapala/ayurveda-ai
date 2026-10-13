@@ -8,6 +8,7 @@ import AIChat from "./pages/AIChat";
 
 import VoiceAssistant from "./components/VoiceAssistant";
 import FoodScanner from "./components/FoodScanner";
+import ThemeToggle from "./components/ThemeToggle";
 
 
 /* =====================================================
@@ -118,6 +119,8 @@ function PageWithBack({ children }) {
 function App() {
   return (
     <BrowserRouter>
+
+      <ThemeToggle />
 
       <Routes>
 
